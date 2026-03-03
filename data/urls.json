@@ -1,0 +1,238 @@
+{
+  "metadata": {
+    "name": "Libya Knowledge Source Registry",
+    "version": "1.0.0",
+    "last_updated": "2026-02-23",
+    "owner": "Tatweer AI Team",
+    "source_type": "web",
+    "notes": "Official portals and trusted institutions. URLs are intended for retrieval-grounded QA."
+  },
+  "defaults": {
+    "request": {
+      "timeout_seconds": 20,
+      "max_retries": 2,
+      "min_text_chars": 800,
+      "user_agent": "Mozilla/5.0 (compatible; LibyaRAG/1.0; +https://example.local)"
+    }
+  },
+  "sources": [
+    {
+      "id": "central_authorities_cbl",
+      "category": "central_authorities",
+      "title": "Central Bank of Libya (CBL)",
+      "url": "https://cbl.gov.ly",
+      "description": "Exchange rates, monetary policy decisions, banking regulations, and official financial circulars."
+    },
+    {
+      "id": "central_authorities_noc",
+      "category": "central_authorities",
+      "title": "National Oil Corporation (NOC)",
+      "url": "https://noc.gov.ly",
+      "description": "Energy sector announcements, production updates, reports, tenders, and official statements."
+    },
+    {
+      "id": "central_authorities_lia",
+      "category": "central_authorities",
+      "title": "Libyan Investment Authority (LIA)",
+      "url": "https://lia.ly",
+      "description": "Sovereign investment information, governance, public statements, and financial or policy disclosures."
+    },
+    {
+      "id": "central_authorities_pm",
+      "category": "central_authorities",
+      "title": "Government of National Unity (Prime Minister Office)",
+      "url": "https://pm.gov.ly",
+      "description": "Prime Minister office announcements, official communications, decisions, and cabinet-related updates."
+    },
+    {
+      "id": "central_authorities_hakoometna",
+      "category": "central_authorities",
+      "title": "Hakoometna (Our Government)",
+      "url": "https://hakoometna.ly",
+      "description": "Government communications and public service information for citizens."
+    },
+    {
+      "id": "central_authorities_bsc",
+      "category": "central_authorities",
+      "title": "Bureau of Statistics and Census",
+      "url": "https://bsc.ly",
+      "description": "National statistics, demographic indicators, economic metrics, and census-related publications."
+    },
+    {
+      "id": "central_authorities_audit",
+      "category": "central_authorities",
+      "title": "Audit Bureau of Libya",
+      "url": "https://audit.gov.ly",
+      "description": "Oversight reports, audits of public funds, accountability statements, and institutional publications."
+    },
+
+    {
+      "id": "ministry_finance",
+      "category": "government_ministries",
+      "title": "Ministry of Finance",
+      "url": "https://mof.gov.ly",
+      "description": "Public budgeting, fiscal policy, government expenditure, revenue management, and financial regulations."
+    },
+    {
+      "id": "ministry_foreign_affairs",
+      "category": "government_ministries",
+      "title": "Ministry of Foreign Affairs",
+      "url": "https://mofa.gov.ly",
+      "description": "Diplomatic relations, consular services, official statements, international agreements, and travel advisories."
+    },
+    {
+      "id": "ministry_interior",
+      "category": "government_ministries",
+      "title": "Ministry of Interior",
+      "url": "https://moi-ly.info",
+      "description": "Internal security, policing and public safety services, civil protection, and administrative announcements."
+    },
+    {
+      "id": "ministry_justice",
+      "category": "government_ministries",
+      "title": "Ministry of Justice",
+      "url": "https://aladel.gov.ly",
+      "description": "Justice sector administration, legal services, judicial coordination, regulations, and public notices."
+    },
+    {
+      "id": "ministry_economy_trade",
+      "category": "government_ministries",
+      "title": "Ministry of Economy & Trade",
+      "url": "https://economy.gov.ly",
+      "description": "Trade policy, business regulations, investment facilitation, licensing guidance, and economic initiatives."
+    },
+    {
+      "id": "ministry_higher_education",
+      "category": "government_ministries",
+      "title": "Ministry of Higher Education & Scientific Research",
+      "url": "https://mhesr.gov.ly",
+      "description": "University governance, higher education policy, scholarships, accreditation, and research-sector announcements."
+    },
+    {
+      "id": "ministry_education",
+      "category": "government_ministries",
+      "title": "Ministry of Education",
+      "url": "https://moe.gov.ly",
+      "description": "School education policy, curriculum guidance, academic calendars, examinations, and sector updates."
+    },
+    {
+      "id": "ministry_tv_education",
+      "category": "government_ministries",
+      "title": "Ministry of Technical & Vocational Education",
+      "url": "https://mtvegov.ly",
+      "description": "Technical and vocational training programs, institutes, certifications, and workforce skills development."
+    },
+    {
+      "id": "ministry_health",
+      "category": "government_ministries",
+      "title": "Ministry of Health",
+      "url": "https://moh.gov.ly",
+      "description": "Public health policy, healthcare services, hospital system updates, guidelines, and health-sector announcements."
+    },
+    {
+      "id": "ministry_labor",
+      "category": "government_ministries",
+      "title": "Ministry of Labor & Rehabilitation",
+      "url": "https://labour.gov.ly",
+      "description": "Employment policy, labor regulations, job programs, training/rehabilitation services, and workforce initiatives."
+    },
+    {
+      "id": "ministry_social_affairs",
+      "category": "government_ministries",
+      "title": "Ministry of Social Affairs",
+      "url": "https://mosa.ly",
+      "description": "Social welfare programs, family support services, protection initiatives, and related public guidance."
+    },
+    {
+      "id": "ministry_planning",
+      "category": "government_ministries",
+      "title": "Ministry of Planning",
+      "url": "https://planning.gov.ly",
+      "description": "National development plans, strategic projects, policy planning, and cross-sector coordination updates."
+    },
+    {
+      "id": "ministry_transport",
+      "category": "government_ministries",
+      "title": "Ministry of Transportation",
+      "url": "https://mot.gov.ly",
+      "description": "Transport policy, aviation/ports/roads administration, logistics regulations, and sector announcements."
+    },
+    {
+      "id": "ministry_water_resources",
+      "category": "government_ministries",
+      "title": "Ministry of Water Resources",
+      "url": "https://mwr.gov.ly",
+      "description": "Water resource management, infrastructure oversight, supply policies, and water-sector planning updates."
+    },
+    {
+      "id": "ministry_agriculture",
+      "category": "government_ministries",
+      "title": "Ministry of Agriculture",
+      "url": "https://agriculture.gov.ly",
+      "description": "Agriculture policy, food production programs, farming support, livestock initiatives, and sector guidance."
+    },
+    {
+      "id": "ministry_housing_construction",
+      "category": "government_ministries",
+      "title": "Ministry of Housing & Construction",
+      "url": "https://hib.ly",
+      "description": "Housing policy, construction sector oversight, public projects, urban planning coordination, and tenders."
+    },
+    {
+      "id": "ministry_culture",
+      "category": "government_ministries",
+      "title": "Ministry of Culture & Knowledge Development",
+      "url": "https://culture.gov.ly",
+      "description": "Cultural policy, heritage initiatives, knowledge programs, events, and official cultural announcements."
+    },
+    {
+      "id": "ministry_comm_informatics",
+      "category": "government_ministries",
+      "title": "Ministry of Communications & Informatics",
+      "url": "https://gacily.com",
+      "description": "Digital transformation strategy, ICT policy, e-government initiatives, and national communications programs."
+    },
+    {
+      "id": "ministry_environment",
+      "category": "government_ministries",
+      "title": "Ministry of Environment",
+      "url": "https://environment.gov.ly",
+      "description": "Environmental policy, climate and conservation initiatives, regulations, and environmental program updates."
+    },
+    {
+      "id": "ministry_defense",
+      "category": "government_ministries",
+      "title": "Ministry of Defense",
+      "url": "https://mod.gov.ly",
+      "description": "Defense administration announcements and institutional updates."
+    },
+    {
+      "id": "ministry_awqaf",
+      "category": "government_ministries",
+      "title": "Ministry of Awqaf & Islamic Affairs",
+      "url": "https://awqaf.gov.ly",
+      "description": "Religious affairs administration, waqf services, mosque management guidance, and official announcements."
+    },
+    {
+      "id": "ministry_youth",
+      "category": "government_ministries",
+      "title": "Ministry of Youth",
+      "url": "https://youth.gov.ly",
+      "description": "Youth programs, sports and engagement initiatives, community projects, and related announcements."
+    },
+    {
+      "id": "ministry_local_government",
+      "category": "government_ministries",
+      "title": "Ministry of Local Government",
+      "url": "https://lgm.gov.ly",
+      "description": "Municipal administration guidance, local governance policy, services coordination, and official updates."
+    },
+    {
+      "id": "ministry_tourism",
+      "category": "government_ministries",
+      "title": "Ministry of Tourism",
+      "url": "https://tourism.gov.ly",
+      "description": "Tourism policy, destination promotion, licensing guidance, and tourism-sector news and announcements."
+    }
+  ]
+}
