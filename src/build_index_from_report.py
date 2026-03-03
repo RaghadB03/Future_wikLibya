@@ -1,5 +1,4 @@
-# src/build_index_from_report.py
-
+import os
 import json
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -8,19 +7,20 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 load_dotenv()
 
-import chromadb
+from pinecone import Pinecone
 
-from llama_index.core import Document, StorageContext, VectorStoreIndex, Settings
+from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.core.node_parser import SentenceSplitter
-from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.vector_stores.pinecone import PineconeVectorStore
 from llama_index.embeddings.openai import OpenAIEmbedding
 
 
 REPORT_PATH = "reports/source_validation_report.json"
 URLS_FILE = "data/urls.json"
 
-PERSIST_DIR = "chroma_db"
-COLLECTION = "libya_kb"
+# ✅ Put your Pinecone index name created in the dashboard
+INDEX_NAME = "your_index_name"   # <-- change this
+
 
 # Use the SAME embedding model for indexing + querying
 Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
@@ -30,7 +30,6 @@ def extract_text_from_html(html: str) -> str:
     """Convert HTML to clean text for indexing (remove navigation/UI noise)."""
     soup = BeautifulSoup(html, "html.parser")
 
-    # remove non-content elements that hurt retrieval quality
     for tag in soup(["script", "style", "noscript", "header", "footer", "nav", "aside"]):
         tag.decompose()
 
@@ -126,23 +125,27 @@ def main():
         for s in skipped[:10]:
             print(" -", s)
 
-    # Chunking
-    # Method: SentenceSplitter
-    # - chunk_size=800 characters (approx)
-    # - chunk_overlap=120 characters to preserve context across chunk boundaries
-    splitter = SentenceSplitter(chunk_size=800, chunk_overlap=200)
+    # ✅ Chunking (changed method)
+    # SentenceSplitter produces clean chunks and preserves overlap well.
+    # Better for web pages than huge raw documents.
+    splitter = SentenceSplitter(
+        chunk_size=1024,      # larger than before
+        chunk_overlap=200
+    )
     nodes = splitter.get_nodes_from_documents(documents)
+    print(f"✅ Nodes created: {len(nodes)}")
 
-    # Persist to Chroma
-    client = chromadb.PersistentClient(path=PERSIST_DIR)
-    collection = client.get_or_create_collection(COLLECTION)
-    vector_store = ChromaVectorStore(chroma_collection=collection)
-    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    # ✅ Connect to Pinecone (dashboard index)
+    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+    pinecone_index = pc.Index(INDEX_NAME)
 
-    VectorStoreIndex(nodes, storage_context=storage_context, show_progress=True)
+    vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
+    index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 
-    print("\n✅ Index built successfully!")
-    print(f"   DB: {PERSIST_DIR}/  |  Collection: {COLLECTION}")
+    # ✅ Insert nodes into Pinecone
+    index.insert_nodes(nodes)
+    print("\n✅ Pinecone index updated successfully!")
+    print(f"   Index: {INDEX_NAME}")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,15 @@
+# secrets
 .env
+.env.*
+
+# python
 .venv/
-chroma_db/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# local artifacts
+chroma_db/
+data/raw/
+data/cache/
+reports/*.html
