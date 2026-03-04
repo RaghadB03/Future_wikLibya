@@ -18,11 +18,11 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 REPORT_PATH = "reports/source_validation_report.json"
 URLS_FILE = "data/urls.json"
 
-# ✅ Put your Pinecone index name created in the dashboard
-INDEX_NAME = "your_index_name"   # <-- change this
+
+INDEX_NAME = "wiklibya"   
 
 
-# Use the SAME embedding model for indexing + querying
+
 Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
 
 
@@ -109,7 +109,7 @@ def main():
                     "source_id": src["id"],
                     "category": src["category"],
                     "title": src["title"],
-                    "source_url": str(r.url),  # final URL after redirects
+                    "source_url": str(r.url), 
                     "description": src["description"],
                     "content_type": r.headers.get("Content-Type"),
                 },
@@ -125,24 +125,22 @@ def main():
         for s in skipped[:10]:
             print(" -", s)
 
-    # ✅ Chunking (changed method)
-    # SentenceSplitter produces clean chunks and preserves overlap well.
-    # Better for web pages than huge raw documents.
+  #chunking
     splitter = SentenceSplitter(
-        chunk_size=1024,      # larger than before
+        chunk_size=1024,     
         chunk_overlap=200
     )
     nodes = splitter.get_nodes_from_documents(documents)
     print(f"✅ Nodes created: {len(nodes)}")
 
-    # ✅ Connect to Pinecone (dashboard index)
+    # pinecone
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
     pinecone_index = pc.Index(INDEX_NAME)
 
     vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
     index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 
-    # ✅ Insert nodes into Pinecone
+    # Insert nodes into Pinecone
     index.insert_nodes(nodes)
     print("\n✅ Pinecone index updated successfully!")
     print(f"   Index: {INDEX_NAME}")
