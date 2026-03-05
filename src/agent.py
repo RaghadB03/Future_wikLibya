@@ -1,65 +1,45 @@
 from dotenv import load_dotenv
 load_dotenv()
-
 import os
-from pinecone import Pinecone
-
-from llama_index.core import VectorStoreIndex, Settings
-from llama_index.vector_stores.pinecone import PineconeVectorStore
-from llama_index.llms.openai import OpenAI
-from llama_index.embeddings.openai import OpenAIEmbedding
-
-
-Settings.llm = OpenAI(model="gpt-4o", temperature=0)
-Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
-
-
-def get_index() -> VectorStoreIndex:
-    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-    pinecone_index = pc.Index("wiklibya")
-
-    vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
-    return VectorStoreIndex.from_vector_store(vector_store=vector_store)
-
+import asyncio
+from pprint import pprint
 from tavily import TavilyClient
-def tavily_search(query:str):
-    'Function that search the web given a query, returns found resources and their metadata.'
-    client = TavilyClient(os.getenv('TAVILY_API_KEY'))
-    response = client.search(
-        query=query,
-        search_depth="basic"
-    )
-    return response
-
-result = tavily_search('من هو محافظ مركز ليبيا المركزي الحالي؟')
-print(result)
-
-
+from llama_index.llms.openai import OpenAI
+from llama_index.core import Settings
 from llama_index.core.tools import FunctionTool
-search_function = FunctionTool.from_defaults(tavily_search)
-
-response = llm.predict_and_call(tools=[search_function],
-                                user_msg='من هو محافظ مصرف ليبيا المركزي الحالي؟',
-                                verbose= True
-                                )
-
-pprint(response.response)
-
-
 from llama_index.core.agent.workflow import ReActAgent
 from llama_index.core.workflow import Context
 
-agent = ReActAgent(
-    tools=[search_function, currency_function],
-    llm=llm,
-    verbose=True,
+
+llm = OpenAI(model="gpt-4o", temperature=0, api_key=os.getenv("OPENAI_API_KEY"))
+Settings.llm = llm
+
+
+def tavily_search(query: str):
+    client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+    return client.search(query=query, search_depth="basic", max_results=5)
+
+
+search_tool = FunctionTool.from_defaults(
+    fn=tavily_search,
+    name="web_search",
+    description="Search the web for recent or unknown information."
 )
 
-ctx = Context(agent)
 
+async def ask_agent():
 
-handler = await agent.run('من هو المحافظ الحالي لمصرف ليبيا المركزي؟', ctx=ctx)
+    agent = ReActAgent(
+        tools=[search_tool],
+        llm=llm,
+    )
 
-print(handler.response)
+    ctx = Context(agent)
 
-print(handler.tool_calls)
+    handler = await agent.run(
+        "سعر الدينار الليبي مقابل الدولار في السوق الموازي اليوم في ليبيا؟",
+        ctx=ctx
+    )
+
+    return handler.response
+

@@ -27,7 +27,6 @@ Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
 
 
 def extract_text_from_html(html: str) -> str:
-    """Convert HTML to clean text for indexing (remove navigation/UI noise)."""
     soup = BeautifulSoup(html, "html.parser")
 
     for tag in soup(["script", "style", "noscript", "header", "footer", "nav", "aside"]):
@@ -79,14 +78,14 @@ def main():
     if not ok_sources:
         raise RuntimeError("No OK sources found. Run validate_sources.py first.")
 
-    print(f"✅ OK sources to index: {len(ok_sources)} / {len(sources)}")
+    print(f"OK sources to index: {len(ok_sources)} / {len(sources)}")
 
     documents: List[Document] = []
     skipped: List[Dict[str, Any]] = []
 
     for src in ok_sources:
         url = src["url"]
-        print(f"🌍 Fetching OK source: {src['title']} | {url}")
+        print(f"Fetching OK source: {src['title']} | {url}")
 
         r, err = fetch(url, timeout=timeout, user_agent=user_agent)
         if err or r is None:
@@ -119,7 +118,7 @@ def main():
     if not documents:
         raise RuntimeError("No documents fetched for indexing. Something is wrong with OK sources.")
 
-    print(f"\n✅ Documents ready: {len(documents)}")
+    print(f"\n Documents ready: {len(documents)}")
     if skipped:
         print(f"⚠️ Skipped during build: {len(skipped)}")
         for s in skipped[:10]:
@@ -131,7 +130,6 @@ def main():
         chunk_overlap=200
     )
     nodes = splitter.get_nodes_from_documents(documents)
-    print(f"✅ Nodes created: {len(nodes)}")
 
     # pinecone
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
@@ -142,8 +140,7 @@ def main():
 
     # Insert nodes into Pinecone
     index.insert_nodes(nodes)
-    print("\n✅ Pinecone index updated successfully!")
-    print(f"   Index: {INDEX_NAME}")
+
 
 
 if __name__ == "__main__":
