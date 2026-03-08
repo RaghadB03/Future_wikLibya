@@ -124,21 +124,21 @@ def main():
         for s in skipped[:10]:
             print(" -", s)
 
-  #chunking
+ 
     splitter = SentenceSplitter(
         chunk_size=1024,     
         chunk_overlap=200
     )
     nodes = splitter.get_nodes_from_documents(documents)
 
-    # pinecone
+   
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
     pinecone_index = pc.Index(INDEX_NAME)
 
     vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
     index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 
-    # Insert nodes into Pinecone
+    
     index.insert_nodes(nodes)
 
 
